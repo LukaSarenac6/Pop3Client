@@ -12,7 +12,7 @@
 #include <QFile>
 #include <QByteArray>
 #include <QString>
-#include "const.h"
+
 class ClAuto : public QObject
 {
     Q_OBJECT
@@ -38,21 +38,29 @@ signals:
     void Client_Signal_User_Connection(const QString&);
     void Client_Signal_Send_Username(const QString&);
     void Client_Signal_Username_Ok(const QString&, const QString&);
+    void Client_Signal_Send_Password(const QString&);
+    void Client_Signal_MSG_Quit(const QString);
+    void Client_Signal_User_Disconected(const QString&);
+    void Client_Signal_Send_Stat(const QString&);
 
 public slots:
-    void Client_Slot_User_Check_Mail(const QString& message);
-    void Client_Slot_Channel_Connection_Accept(const QString& message);
-    void Client_Slot_User_Sent_Username_Password(const QString& username, const QString& password);
-    void Client_Slot_Channel_MSG_Response(const QString messageResponse);
+    void Client_Slot_User_Check_Mail(const QString&);
+    void Client_Slot_Channel_Connection_Accept(const QString&);
+    void Client_Slot_User_Sent_Username_Password(const QString&, const QString&);
+    void Client_Slot_Channel_MSG_Response(const QString);
+    //void Client_Slot_Client_Disconected(const QString&);
 
 private:
-    QString Client_Make_Message(QString& string);
+    QString Client_Make_Message(QString&);
 
     ClStates clientState;
     bool usernameSent = false;
+    bool passwordSent = false;
 
     QString usernameReceived;
     QString passwordReceived;
+
+    const QString quitMessage = "MSG(QUIT)";
 };
 
 

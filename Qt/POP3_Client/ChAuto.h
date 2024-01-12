@@ -11,7 +11,9 @@
 #include <QFile>
 #include <QByteArray>
 #include <QString>
-#include "const.h"
+#include <QFile>
+#include <QStringList>
+
 class ChAuto : public QObject
 {
     Q_OBJECT
@@ -26,20 +28,27 @@ public:
     ~ChAuto();
 
 signals:
-    void Channel_Signal_Client_Connection_Accept(const QString& message);
-    void Channel_Signal_MSG_Response(const QString messageResponse);
+    void Channel_Signal_Client_Connection_Accept(const QString&);
+    void Channel_Signal_MSG_Response(const QString);
+    //void Channel_Signal_Disconect_User(const QString&);
 
 
 public slots:
-    void Channel_Slot_Client_Connection_Request(const QString& message);
-    void Channel_Slot_Client_Username_Receive(const QString& message);
-
+    void Channel_Slot_Client_Connection_Request(const QString&);
+    void Channel_Slot_Username_Receive(const QString&);
+    void Channel_Slot_Password_Receive(const QString&);
+    void Channel_Slot_MSG_Quit(const QString);
+    void Channel_Slot_Stat_Message(const QString);
 
 private:
-    bool Channel_Username_Exists(const QString& username);
+    bool Channel_Username_Exists(const QString&);
+    bool Channel_Password_Exists(const QString&);
+
     ChStates channelState;
     const QString okMessage = "MSG(+OK)";
     const QString errMessage = "MSG(-ERR)";
+
+    QStringList userList;
 
 };
 

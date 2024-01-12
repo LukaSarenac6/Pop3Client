@@ -10,7 +10,7 @@ UserAuto::~UserAuto() {
 
 
 void UserAuto::User_Set_All() {
-    QString message = "User_Check_Mail";
+    const QString& message = "User_Check_Mail";
 
     emit User_Signal_Set_All(message);
 
@@ -30,11 +30,16 @@ void UserAuto::User_Slot_User_Connection(const QString& clientMessage){
 
 void UserAuto::User_Slot_User_Connected() {
 
-    QString username = "luka";
-    QString password = "sarenac";
+    const QString& username = "luka";
+    const QString& password = "sarenac";
     // TO DO: unos sa tastature
     emit User_Signal_Send_Username_Password(username, password);
 
     userState = FSM_User_Connected;
 
+}
+
+void UserAuto::User_Slot_User_Disconected(const QString& disconectMessage) {
+    qDebug() << disconectMessage;
+    userState = FSM_User_Idle;
 }

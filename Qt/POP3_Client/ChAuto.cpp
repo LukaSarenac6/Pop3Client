@@ -12,6 +12,34 @@ ChAuto::~ChAuto() {
 bool ChAuto::Channel_Username_Exists(const QString& usernameMessage) {
 
     //TO DO: realizovati logiku provere
+    QFile file("D:/7.semestar/MRKiRM/Projekat/userDatabase.txt");
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Could not open the database file.";
+        return false;
+    }
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+
+        QString line = in.readLine();
+        QStringList userInfo = line.split(":");
+        if (userInfo[0] == "lukaa") {    // TO DO: REALIZOVATI DA STRIPUJE MSG(username) u username
+            userList = userInfo;
+
+            file.close();
+
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}
+
+bool ChAuto::Channel_Password_Exists(const QString& usernameMessage) {
+
+    //TO DO: realizovati logiku provere
     return true;
 }
 
@@ -37,7 +65,7 @@ void ChAuto::Channel_Slot_Client_Connection_Request(const QString& clientMessage
 
 }
 
-void ChAuto::Channel_Slot_Client_Username_Receive(const QString& usernameMessage) {
+void ChAuto::Channel_Slot_Username_Receive(const QString& usernameMessage) {
 
     qDebug() << usernameMessage;
 
@@ -47,6 +75,29 @@ void ChAuto::Channel_Slot_Client_Username_Receive(const QString& usernameMessage
     }
 
     emit Channel_Signal_MSG_Response(okMessage);
+
+}
+
+void ChAuto::Channel_Slot_Password_Receive(const QString& passwordMessage) {
+    qDebug() << passwordMessage;
+
+    if (!Channel_Password_Exists(passwordMessage)) {
+        emit Channel_Signal_MSG_Response(errMessage);
+        return;
+    }
+
+    emit Channel_Signal_MSG_Response(okMessage);
+}
+
+void ChAuto::Channel_Slot_MSG_Quit(const QString quitMessage) {
+    qDebug() << quitMessage;
+    const QString& disconectMessage = "Cl_Disconected";
+    emit Channel_Signal_MSG_Response(disconectMessage);
+    channelState = FSM_Ch_Idle;
+}
+
+void ChAuto::Channel_Slot_Stat_Message(const QString statMessage) {
+    qDebug() << statMessage;
 
 }
 

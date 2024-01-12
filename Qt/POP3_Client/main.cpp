@@ -21,10 +21,13 @@ int main(int argc, char *argv[])
     QObject::connect(&client, SIGNAL(Client_Signal_User_Connection(QString)), &user, SLOT(User_Slot_User_Connection(QString)));
     QObject::connect(&user, SIGNAL(User_Signal_User_Connected()), &user, SLOT(User_Slot_User_Connected()));
     QObject::connect(&user, SIGNAL(User_Signal_Send_Username_Password(QString,QString)), &client, SLOT(Client_Slot_User_Sent_Username_Password(QString,QString)));
-    QObject::connect(&client, SIGNAL(Client_Signal_Send_Username(QString)), &channel, SLOT(Channel_Slot_Client_Username_Receive(QString)));
+    QObject::connect(&client, SIGNAL(Client_Signal_Send_Username(QString)), &channel, SLOT(Channel_Slot_Username_Receive(QString)));
     QObject::connect(&channel, SIGNAL(Channel_Signal_MSG_Response(QString)), &client, SLOT(Client_Slot_Channel_MSG_Response(QString)));
     QObject::connect(&client, SIGNAL(Client_Signal_Username_Ok(QString, QString)), &client, SLOT(Client_Slot_User_Sent_Username_Password(QString, QString)));
-
+    QObject::connect(&client, SIGNAL(Client_Signal_Send_Password(QString)), &channel, SLOT(Channel_Slot_Password_Receive(QString)));
+    QObject::connect(&client, SIGNAL(Client_Signal_MSG_Quit(QString)), &channel, SLOT(Channel_Slot_MSG_Quit(QString)));
+    QObject::connect(&client, SIGNAL(Client_Signal_User_Disconected(QString)), &user, SLOT(User_Slot_User_Disconected(QString)));
+    QObject::connect(&client, SIGNAL(Client_Signal_Send_Stat(QString)), &channel, SLOT(Channel_Slot_Stat_Message(QString)));
     user.User_Set_All();
 
     return a.exec();

@@ -53,7 +53,6 @@ void ClAuto::Client_Slot_Channel_Connection_Accept(const QString& channelMessage
 
 void ClAuto::Client_Slot_User_Sent_Username_Password(const QString& username, const QString& password) {
 
-
     if (!usernameSent) {
         qDebug() << username;
         qDebug() << password;
@@ -77,17 +76,40 @@ void ClAuto::Client_Slot_User_Sent_Username_Password(const QString& username, co
         return;
     }
 
-    passwordMessage = Client_Make_Message(passwordMessage);
-    qDebug() << passwordMessage;
-    clientState = FSM_Cl_Pass_Check;
+    if (!passwordSent) {
+        passwordSent = true;
+
+        passwordMessage = Client_Make_Message(passwordMessage);
+        qDebug() << passwordMessage;
+
+        emit Client_Signal_Send_Password(passwordMessage);
+        clientState = FSM_Cl_Pass_Check;
+        return;
+    }
+
+    qDebug() << "za sad radi dobro";
+    const QString& statMessage = "MSG(STAT)";
+    emit Client_Signal_Send_Stat(statMessage);
+    clientState = FSM_Cl_Mail_Check;
 }
 
 void ClAuto::Client_Slot_Channel_MSG_Response(const QString messageResponse) {
     qDebug() << messageResponse;
-    if (messageResponse == "MSG(-ERR") {
+    if (messageResponse == "MSG(-ERR)") {
         // TO DO: MSG QUIT
         usernameSent = false;
+        passwordSent = false;
+        qDebug() << quitMessage;
+        emit Client_Signal_MSG_Quit(quitMessage);
+        clientState = FSM_Cl_Disconnecting;
+        return;
+    } else if (messageResponse == "Cl_Disconected") {
+        const QString& disconectMessage = "User_Disconected";
+        emit Client_Signal_User_Disconected(disconectMessage);
+        clientState = FSM_Cl_Ready;
+        return;
     }
 
     emit Client_Signal_Username_Ok(usernameReceived, passwordReceived);
 }
+

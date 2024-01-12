@@ -13,10 +13,9 @@
 #include <QByteArray>
 #include <QString>
 #include <QTextStream>
-#include <iostream>
 #include <QCoreApplication>
-#include <string>
-#include "const.h"
+
+
 
 class UserAuto : public QObject
 {
@@ -36,14 +35,15 @@ public:
     void User_Set_All();
 
 signals:
-    void User_Signal_Set_All(const QString& message);
+    void User_Signal_Set_All(const QString&);
     void User_Signal_User_Connected();
-    void User_Signal_Send_Username_Password(const QString& username, const QString& password);
+    void User_Signal_Send_Username_Password(const QString&, const QString&);
 
 
 public slots:
-    void User_Slot_User_Connection(const QString& message);
+    void User_Slot_User_Connection(const QString&);
     void User_Slot_User_Connected();
+    void User_Slot_User_Disconected(const QString&);
 
 
 private:
