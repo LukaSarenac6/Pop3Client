@@ -110,6 +110,6 @@ void ClAuto::Client_Slot_Channel_MSG_Response(const QString messageResponse) {
         return;
     }
 
-    emit Client_Signal_Username_Ok(usernameReceived, passwordReceived);
+    emit Client_Signal_Username_Password_Ok(usernameReceived, passwordReceived);
 }
 

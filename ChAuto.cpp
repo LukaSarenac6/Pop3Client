@@ -25,8 +25,11 @@ bool ChAuto::Channel_Username_Exists(const QString& usernameMessage) {
         QString line = in.readLine();
         QStringList userInfo = line.split(":");
         if (userInfo[0] == usernameMessage.split("(")[1].split(")")[0]) {
+            /* since message is in format MSG(username), split it, after first split -> {MSG, username)}, after seccond split -> {username}*/
+
+            /*put user info in a list of two elements {username, password}*/
             userList = userInfo;
-           // qDebug() << "AAAAAAAAAAAA" << usernameMessage.split("(")[1].split(")")[0];
+
             file.close();
 
             return true;
@@ -38,8 +41,6 @@ bool ChAuto::Channel_Username_Exists(const QString& usernameMessage) {
 }
 
 bool ChAuto::Channel_Password_Exists(const QString& passwordMessage) {
-
-  //  qDebug() << "BBBBBBBBBBBB" << passwordMessage.split("(")[1].split(")")[0];
 
     if (passwordMessage.split("(")[1].split(")")[0] == userList[1]) {
         return true;
