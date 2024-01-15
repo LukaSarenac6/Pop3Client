@@ -77,7 +77,13 @@ private:
      * @brief represents the current state of the user automate
      */
     UserStates userState;
+    /**
+     * @brief username provided through ui
+     */
     QString username;
+    /**
+     * @brief password provided through ui
+     */
     QString password;
 };
 

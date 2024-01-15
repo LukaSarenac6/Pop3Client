@@ -31,6 +31,12 @@ public:
     explicit ClAuto(QObject *parent = nullptr);
     ~ClAuto();
 
+    /**
+     * @brief sets clients state
+     * @param state
+     */
+    void SetState(ClStates state);
+
 signals:
     /**
      * @brief send a message to channel to connect the user, connected to SLOT Channel_Slot_Client_Connection_Request
@@ -73,13 +79,53 @@ signals:
      * @param message "MSG(STAT)" of POP3 protocol
      */
     void Client_Signal_Send_Stat(const QString& message);
+    /**
+     * @brief provides info to the ui class that user logged correctly, connected to SLOT user_logged
+     */
     void Client_Signal_User_Logged();
+    /**
+     * @brief sends a retr message to the channel, connected to SLOT Channel_Slot_Retr_Message
+     * @param message "MSG(RETR) arg" of POP3 protocol
+     */
     void Client_Signal_Send_Retr(const QString& message);
-    void Client_Signal_Send_List(const QString& message);
-    void Client_Signal_Send_Dele(const QString& message);
-    void Client_Signal_Stat_Result(QString message);
-    void Client_Signal_Username_Password_Incorrect();
+    /**
+     * @brief sends a list message to the channel, connected to SLOT
+     * @param message "MSG(LIST)" of POP3 protocol
 
+    void Client_Signal_Send_List(const QString& message);*/
+    /**
+     * @brief sends a dele message to the channel, connected to SLOT Channel_Slot_Dele_Message
+     * @param message "MSG(DELE) arg" of POP3 protocol
+     */
+    void Client_Signal_Send_Dele(const QString& message);
+    /**
+     * @brief sends the stat result to the ui, connected to SLOT stat_result
+     * @param message stat result
+     */
+    void Client_Signal_Stat_Result(QString message);
+    /**
+     * @brief sends a user login error to the ui, connected to SLOT username_password_incorrect
+     */
+    void Client_Signal_Username_Password_Incorrect();
+    /**
+     * @brief sends the size of the mail to the ui, connected to SLOT print_mail_size
+     * @param size
+     */
+    void Client_Signal_Mail_Size(int size);
+    /**
+     * @brief sends the mail content to the ui, connected to SLOT print_mail
+     * @param mail
+     */
+    void Client_Signal_Mail_Content(QString mail);
+    /**
+     * @brief sands an error while trying to access a mail at provided index, connected to SLOT no_mail_at_index
+     */
+    void Client_Signal_No_Mail_At_Index();
+    /**
+     * @brief sends a confirmation of mail deletion, connected to SLOT mail_deleted
+     * @param message, mail deleted message
+     */
+    void Client_Signal_Mail_Delete(QString message);
 public slots:
     /**
      * @brief receives a check mail message and proceeds the communication, connected to SIGNAL User_Signal_Set_All
@@ -103,10 +149,31 @@ public slots:
      */
     void Client_Slot_Channel_MSG_Response(const QString message);
     //void Client_Slot_Client_Disconected(const QString&);
-
-    void SetState(ClStates state);
+    /**
+     * @brief provides stat result to the uiconnected to SIGNAL Channel_Signal_Stat_Result
+     * @param message stat result
+     */
     void Client_Slot_Stat_Result(QString message);
-
+    /**
+     * @brief provides mail size to the uiconnected to SIGNAL Channel_Signal_Mail_Size
+     * @param message mail size
+     */
+    void Client_Slot_Mail_Size(QString message);
+    /**
+     * @brief provides mail content to the uiconnected to SIGNAL Channel_Signal_Mail_Content
+     * @param message mail content
+     */
+    void Client_Slot_Mail_Content(QString message);
+    /**
+     * @brief provides an error when checking mail at given indexconnected to SIGNAL Channel_Signal_No_Mail_At_Index
+     * @param message error
+     */
+    void Client_Slot_No_Mail_At_Index(QString message);
+    /**
+     * @brief provides that mail was successfuly deletedconnected to SIGNAL Channel_Signal_Mail_Deleted
+     * @param message deletion successful
+     */
+    void Client_Slot_Mail_Dele(QString message);
 private:
     /**
      * @brief makes a POP3 protocol message concatenating string with MSG()

@@ -121,5 +121,26 @@ void ClAuto::Client_Slot_Channel_MSG_Response(const QString messageResponse) {
 void ClAuto::Client_Slot_Stat_Result(QString statResult) {
     qDebug() << statResult;
     emit Client_Signal_Stat_Result(statResult);
+
+}
+
+void ClAuto::Client_Slot_Mail_Size(QString message) {
+
+    int size = message.split(" ")[1].toInt();
+
+    emit Client_Signal_Mail_Size(size); //TO DO: Dodati p
+}
+
+void ClAuto::Client_Slot_Mail_Content(QString message) {
+    emit Client_Signal_Mail_Content(message);
+}
+
+void ClAuto::Client_Slot_No_Mail_At_Index(QString message) {
+    emit Client_Signal_No_Mail_At_Index();
+}
+
+void ClAuto::Client_Slot_Mail_Dele(QString message) {
+
+    emit Client_Signal_Mail_Delete(message.split(" ")[1] + " " + message.split(" ")[2] + " " + message.split(" ")[3]);
 }
 

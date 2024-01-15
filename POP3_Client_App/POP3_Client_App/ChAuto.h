@@ -42,7 +42,32 @@ signals:
     void Channel_Signal_MSG_Response(const QString message);
     //void Channel_Signal_Disconect_User(const QString&);
 
+    /**
+     * @brief provides the stat result the the channel, connected with SLOT Client_Slot_Stat_Result
+     * @param message, stat resul
+     */
     void Channel_Signal_Stat_Result(QString message);
+
+    /**
+     * @brief emits the size of the mail at specific index when user presses retr, connected with SLOT Client_Slot_Mail_Size
+     * @param message, size of the mail
+     */
+    void Channel_Signal_Mail_Size(QString message);
+    /**
+     * @brief emits the content of the mail at specific index when user presses retr, connected with SLOT Client_Slot_Mail_Content
+     * @param message, mail content
+     */
+    void Channel_Signal_Mail_Content(QString message);
+    /**
+     * @brief emits an error that there is no mail at index, connected with SLOT Client_Slot_No_Mail_At_Index
+     * @param message, "MSG(-ERR) of POP3 protocol
+     */
+    void Channel_Signal_No_Mail_At_Index(QString message);
+    /**
+     * @brief emits a successful mail delition, connected with SLOT Client_Slot_Mail_Dele
+     * @param message
+     */
+    void Channel_Signal_Mail_Deleted(QString message);
 public slots:
     /**
      * @brief establishes the connection which can be manualy approwed in code, connected to SIGNAL Client_Signal_Connection_Request
@@ -65,13 +90,24 @@ public slots:
      */
     void Channel_Slot_MSG_Quit(const QString message);
     /**
-     * @brief activated when client sends a STAT message DOPISATI SUTRA
-     * @param messgage "MSG(STAT)" of POP3 protocol
+     * @brief counts the number of mails and size of all mails, connected with SIGNAL Client_Signal_Send_Stat
+     * @param message "MSG(STAT)" of POP3 protocol
      */
     void Channel_Slot_Stat_Message(const QString message);
+    /**
+     * @brief checks if there is a mail at provided index and emits two signals, one with the mail size, other with mail content,
+     *  if there is no meil with provided intex emit -ERR,  connected with SIGNAL Client_Signal_Send_Retr
+     * @param message
+     */
     void Channel_Slot_Retr_Message(const QString& message);
-    void Channel_Slot_List_Message(const QString& message);
+
+    /**
+     * @brief delets the mail at the provided index, if there is no mail at index emit -ERR signal, connected with SIGNAL Client_Signal_Send_Dele
+     * @param message
+     */
     void Channel_Slot_Dele_Message(const QString& message);
+
+    //void Channel_Slot_List_Message(const QString& message);
 
 private:
     /**

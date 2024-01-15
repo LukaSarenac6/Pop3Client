@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QValidator>
 #include "UserAuto.h"
 #include "ClAuto.h"
 #include "ChAuto.h"
@@ -34,7 +35,7 @@ private slots:
 
     void on_retrButton_clicked();
 
-    void on_listButton_clicked();
+    //void on_listButton_clicked();
 
     void on_deleButton_clicked();
 
@@ -42,6 +43,13 @@ private slots:
 
     void username_password_incorrect();
 
+    void print_mail_size(int size);
+
+    void print_mail(QString mail);
+
+    void no_mail_at_index();
+
+    void mail_deleted(QString message);
 private:
     Ui::MainWindow *ui;
 
