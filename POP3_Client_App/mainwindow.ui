@@ -17,8 +17,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>300</y>
+      <x>20</x>
+      <y>150</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -30,8 +30,8 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>300</y>
+      <x>20</x>
+      <y>230</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -43,8 +43,8 @@
    <widget class="QLineEdit" name="username">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>330</y>
+      <x>10</x>
+      <y>180</y>
       <width>113</width>
       <height>28</height>
      </rect>
@@ -53,8 +53,8 @@
    <widget class="QLineEdit" name="password">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>330</y>
+      <x>10</x>
+      <y>260</y>
       <width>113</width>
       <height>28</height>
      </rect>
@@ -63,9 +63,9 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>360</y>
-      <width>111</width>
+      <x>20</x>
+      <y>510</y>
+      <width>101</width>
       <height>31</height>
      </rect>
     </property>
@@ -76,8 +76,8 @@
    <widget class="QPushButton" name="statButton">
     <property name="geometry">
      <rect>
-      <x>62</x>
-      <y>80</y>
+      <x>580</x>
+      <y>480</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -89,14 +89,93 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>370</y>
+      <x>10</x>
+      <y>310</y>
       <width>101</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>set all</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="deleButton">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>480</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>DELE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="listButton">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>480</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>LIST</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="retrButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>480</y>
+      <width>101</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RETR</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>30</y>
+      <width>431</width>
+      <height>401</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditList">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>520</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditRetr">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>520</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditDele">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>520</y>
+      <width>41</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>

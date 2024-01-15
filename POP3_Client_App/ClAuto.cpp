@@ -8,6 +8,10 @@ ClAuto::~ClAuto() {
 
 }
 
+void ClAuto::SetState(ClStates state) {
+    this->clientState = state;
+}
+
 QString ClAuto::Client_Make_Message(QString& string) {
 
     QString message = "MSG(" + string + ")";
@@ -97,6 +101,7 @@ void ClAuto::Client_Slot_Channel_MSG_Response(const QString messageResponse) {
     qDebug() << messageResponse;
     if (messageResponse == "MSG(-ERR)") {
         // TO DO: MSG QUIT
+        emit Client_Signal_Username_Password_Incorrect();
         usernameSent = false;
         passwordSent = false;
         qDebug() << quitMessage;
@@ -111,5 +116,31 @@ void ClAuto::Client_Slot_Channel_MSG_Response(const QString messageResponse) {
     }
 
     emit Client_Signal_Username_Password_Ok(usernameReceived, passwordReceived);
+}
+
+void ClAuto::Client_Slot_Stat_Result(QString statResult) {
+    qDebug() << statResult;
+    emit Client_Signal_Stat_Result(statResult);
+
+}
+
+void ClAuto::Client_Slot_Mail_Size(QString message) {
+
+    int size = message.split(" ")[1].toInt();
+
+    emit Client_Signal_Mail_Size(size); //TO DO: Dodati promene stejtova ovde
+}
+
+void ClAuto::Client_Slot_Mail_Content(QString message) {
+    emit Client_Signal_Mail_Content(message);
+}
+
+void ClAuto::Client_Slot_No_Mail_At_Index(QString message) {
+    emit Client_Signal_No_Mail_At_Index();
+}
+
+void ClAuto::Client_Slot_Mail_Dele(QString message) {
+
+    emit Client_Signal_Mail_Delete(message.split(" ")[1] + " " + message.split(" ")[2] + " " + message.split(" ")[3]);
 }
 

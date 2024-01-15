@@ -31,7 +31,6 @@ public:
     explicit ClAuto(QObject *parent = nullptr);
     ~ClAuto();
 
-
 signals:
     /**
      * @brief send a message to channel to connect the user, connected to SLOT Channel_Slot_Client_Connection_Request
@@ -75,7 +74,15 @@ signals:
      */
     void Client_Signal_Send_Stat(const QString& message);
     void Client_Signal_User_Logged();
-
+    void Client_Signal_Send_Retr(const QString& message);
+    void Client_Signal_Send_List(const QString& message);
+    void Client_Signal_Send_Dele(const QString& message);
+    void Client_Signal_Stat_Result(QString message);
+    void Client_Signal_Username_Password_Incorrect();
+    void Client_Signal_Mail_Size(int size);
+    void Client_Signal_Mail_Content(QString mail);
+    void Client_Signal_No_Mail_At_Index();
+    void Client_Signal_Mail_Delete(QString message);
 public slots:
     /**
      * @brief receives a check mail message and proceeds the communication, connected to SIGNAL User_Signal_Set_All
@@ -100,6 +107,12 @@ public slots:
     void Client_Slot_Channel_MSG_Response(const QString message);
     //void Client_Slot_Client_Disconected(const QString&);
 
+    void SetState(ClStates state);
+    void Client_Slot_Stat_Result(QString message);
+    void Client_Slot_Mail_Size(QString message);
+    void Client_Slot_Mail_Content(QString message);
+    void Client_Slot_No_Mail_At_Index(QString message);
+    void Client_Slot_Mail_Dele(QString message);
 private:
     /**
      * @brief makes a POP3 protocol message concatenating string with MSG()
@@ -131,6 +144,7 @@ private:
      * @brief a message type in POP3 protocol
      */
     const QString quitMessage = "MSG(QUIT)";
+
 };
 
 

@@ -9,6 +9,7 @@
 #include <QString>
 #include <QFile>
 #include <QStringList>
+#include <QDir>
 
 class ChAuto : public QObject
 {
@@ -41,7 +42,12 @@ signals:
     void Channel_Signal_MSG_Response(const QString message);
     //void Channel_Signal_Disconect_User(const QString&);
 
+    void Channel_Signal_Stat_Result(QString message);
 
+    void Channel_Signal_Mail_Size(QString message);
+    void Channel_Signal_Mail_Content(QString message);
+    void Channel_Signal_No_Mail_At_Index(QString message);
+    void Channel_Signal_Mail_Deleted(QString message);
 public slots:
     /**
      * @brief establishes the connection which can be manualy approwed in code, connected to SIGNAL Client_Signal_Connection_Request
@@ -67,7 +73,10 @@ public slots:
      * @brief activated when client sends a STAT message DOPISATI SUTRA
      * @param messgage "MSG(STAT)" of POP3 protocol
      */
-    void Channel_Slot_Stat_Message(const QString messgage);
+    void Channel_Slot_Stat_Message(const QString message);
+    void Channel_Slot_Retr_Message(const QString& message);
+    void Channel_Slot_List_Message(const QString& message);
+    void Channel_Slot_Dele_Message(const QString& message);
 
 private:
     /**
@@ -97,6 +106,7 @@ private:
      * @brief a list of 2 elements containing username and password
      */
     QStringList userList;
+
 
 };
 

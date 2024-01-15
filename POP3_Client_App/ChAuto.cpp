@@ -102,7 +102,145 @@ void ChAuto::Channel_Slot_MSG_Quit(const QString quitMessage) {
 }
 
 void ChAuto::Channel_Slot_Stat_Message(const QString statMessage) {
-    qDebug() << "sdasda" + statMessage;
+    qDebug() << statMessage;
+    // positive = +OK numOfMessages sizeOfMaildrop(in octets)
+    // izbrisane poruke se ne broje
+
+    QDir directory("D:/7.semestar/MRKiRM/Projekat/mails");
+
+    if (!directory.exists())    {
+        qWarning() << "Directory does not exist: " << "D:/7.semestar/MRKiRM/Projekat/mails";
+        return;
+    }
+
+    QStringList filters;
+    filters << "*.txt";
+    // Filter the files in the directory based on the ".txt" extension
+    directory.setNameFilters(filters);
+    // Get the list of files matching the filter
+    QFileInfoList fileList = directory.entryInfoList();
+
+    qint16 mailNum = 0;
+
+    mailNum = fileList.size();
+    qint64 mailSize = 0;
+
+    foreach(const QFileInfo& file, fileList) {
+        mailSize += file.size();
+    }
+
+
+    QString statResult = "+OK " + QString::number(mailNum) + " " + QString::number(mailSize) /*+ "\r\n"*/;
+    emit Channel_Signal_Stat_Result(statResult);
+    qDebug() << statResult;
+
     return;
 }
+
+void ChAuto::Channel_Slot_List_Message(const QString& message) {
+    // opcioni argument (ako zelimo samo jednu poruku da izlistamo i vidimo njenu velicinu)
+    // +OK brojPoruka messages (velicina octets)
+    // redniBrojPoruke velicina
+    // ..... za sve poruke
+    qDebug() << message;
+}
+
+void ChAuto::Channel_Slot_Retr_Message(const QString& message){
+    // obavezan argument (koju poruku zelimo da procitamo)
+    // +OK velicina octets
+    // mail
+    // -ERR no such message
+    int fileIndex = message.split(" ")[1].toInt();
+
+    QDir directory("D:/7.semestar/MRKiRM/Projekat/mails");
+
+    // Ensure that the directory exists
+    if (!directory.exists()) {
+        qWarning() << "Directory does not exist: " << "D:/7.semestar/MRKiRM/Projekat/mails";
+        return;
+    }
+
+    // Filter the files in the directory based on the ".txt" extension
+    QStringList nameFilters;
+    nameFilters << "*.txt";
+    directory.setNameFilters(nameFilters);
+
+    // Get the list of files matching the filter
+    QFileInfoList fileList = directory.entryInfoList();
+
+    if (fileIndex >= 0 && fileIndex < fileList.size()) {
+        const QFileInfo& fileInfo = fileList.at(fileIndex);
+        //EMIT
+        emit Channel_Signal_Mail_Size("+OK " + QString::number(fileInfo.size()) + " octets");
+        //qDebug() << "NASAO FAJL";
+
+        QFile file(fileInfo.filePath());
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "PROCITO";
+            QTextStream in(&file);
+            QString content = in.readAll();
+            file.close();
+
+            emit Channel_Signal_Mail_Content(content);
+        } else {
+            qDebug() << "Failed to open file for reading: " << fileInfo.filePath();
+            //emit fileNotFound();
+        }
+    } else {
+
+        emit Channel_Signal_No_Mail_At_Index("MSG(-ERR)");
+    }
+
+
+}
+
+
+void ChAuto::Channel_Slot_Dele_Message(const QString& message){
+    // obavezan argument (koju poruku brisemo)
+    // poruka je oznacena kao obrisana, sve sto dalje pokusamo sa njom vraca error
+    // +OK message brojPorukeKojuBrisemo deleted
+    // -ERR message brojPoruke alread deleted
+    qDebug() << message;
+
+    int fileIndex = message.split(" ")[1].toInt();
+
+    QDir directory("D:/7.semestar/MRKiRM/Projekat/mails");
+
+    // Ensure that the directory exists
+    if (!directory.exists()) {
+        qWarning() << "Directory does not exist: " << "D:/7.semestar/MRKiRM/Projekat/mails";
+        return;
+    }
+
+    // Filter the files in the directory based on the ".txt" extension
+    QStringList nameFilters;
+    nameFilters << "*.txt";
+    directory.setNameFilters(nameFilters);
+
+    QFileInfoList fileList = directory.entryInfoList();
+
+    // Check if the file at the specified index exists
+    if (fileIndex >= 0 && fileIndex < fileList.size()) {
+        const QFileInfo& fileInfo = fileList.at(fileIndex);
+
+        // Create a QFile object for the file
+        QFile file(fileInfo.filePath());
+
+        // Remove the file
+        if (file.remove()) {
+            qDebug() << "File deleted successfully: " << fileInfo.filePath();
+            QString deleMessage = "+OK message " + QString::number(fileIndex) + " deleted";
+            qDebug() <<deleMessage;
+            emit Channel_Signal_Mail_Deleted(deleMessage);
+        } else {
+            qWarning() << "Failed to delete file: " << fileInfo.filePath();
+        }
+    } else {
+        qWarning() << "Invalid file index or file does not exist.";
+        emit Channel_Signal_No_Mail_At_Index("MSG(-ERR)");
+    }
+
+}
+
+/*ako stignem uraditi i rset i noop*/
 
